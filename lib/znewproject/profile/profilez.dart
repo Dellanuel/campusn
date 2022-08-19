@@ -18,15 +18,21 @@ class _ProfilezState extends State<Profilez> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 120, vertical: 20),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
               child: CircleAvatar(
+                backgroundColor: Colors.grey[300],
                 radius: 50,
               ),
             ),
             ListTile(
               leading: const Icon(Icons.person),
-              subtitle: const Text('Mane'),
+              subtitle: const Text(
+                'Firstname',
+                style: TextStyle(color: Colors.grey),
+              ),
               title: const Text('Name'),
               trailing:
                   IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
@@ -48,8 +54,7 @@ class _ProfilezState extends State<Profilez> {
                                   height: 30,
                                 ),
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
                                   child: TextField(
                                     decoration: InputDecoration(
                                         border: OutlineInputBorder(
@@ -112,8 +117,7 @@ class _ProfilezState extends State<Profilez> {
                                   height: 30,
                                 ),
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
                                   child: TextField(
                                     decoration: InputDecoration(
                                         border: OutlineInputBorder(
@@ -176,8 +180,7 @@ class _ProfilezState extends State<Profilez> {
                                   height: 30,
                                 ),
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
                                   child: TextField(
                                     decoration: InputDecoration(
                                         border: OutlineInputBorder(

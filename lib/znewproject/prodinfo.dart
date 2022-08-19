@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../main.dart';
+
 class ProdInfo extends StatefulWidget {
   final QueryDocumentSnapshot data;
   const ProdInfo({Key? key, required this.data}) : super(key: key);
@@ -125,7 +127,7 @@ class _ProdInfoState extends State<ProdInfo> {
                       child: ElevatedButton(
                           onPressed: () {
                             //  cart.add(widget.data);
-                            context.read(D).state = cart;
+                        globalref?.read(D).addAll(cart);
                           },
                           child: const Text('Add to Cart')))
                 ]),

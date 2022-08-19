@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SellCartz extends StatefulWidget {
   static const String routename = '/SellCart';
@@ -18,9 +19,13 @@ class _SellCartzState extends State<SellCartz> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Campus Pay'),
-      // ),
+      appBar: AppBar(
+        title:Text('Campus Pay Sell Cart',
+            style: GoogleFonts.alumniSansInlineOne(
+              fontSize: 26,
+              letterSpacing: 1.5,
+            )),
+      ),
       // bottomNavigationBar: BottomAppBar(
       //   child: Container(
       //     height: 70,

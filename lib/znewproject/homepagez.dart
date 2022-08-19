@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:io';
 
+import 'package:campus_pay/homeshoppingcart.dart';
 import 'package:campus_pay/znewproject/drawermenu.dart';
 import 'package:campus_pay/znewproject/profile/profilepage.dart';
 import 'package:campus_pay/znewproject/zsellpage/sellhome.dart';
@@ -11,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../firebase.dart';
+import '../main.dart';
 import 'prodinfo.dart';
 
 final StateProvider<List<Map>> D = StateProvider((ref) => cart);
@@ -23,6 +27,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  var orientation, size, height, width;
   List<QueryDocumentSnapshot> listMap = [];
   @override
   void initState() {
@@ -34,35 +39,21 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        drawer: const DrawerM(),
-        appBar: AppBar(
-          title: const Text('Campus Pay'),
-          actions: [
-            IconButton(
-                icon: const Icon(
-                  Icons.person,
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ProfilePage()));
-                })
-          ],
-          bottom: const TabBar(tabs: [
-            Tab(
-              icon: Icon(Icons.home),
-            ),
-            Tab(
-              icon: Icon(LineAwesomeIcons.shopping_cart),
-            )
-          ]),
-        ),
-        body: TabBarView(children: [
-          listMap.isEmpty
-              ? const CircularProgressIndicator()
+  Widget build(
+    BuildContext context,
+  ) {
+    orientation = MediaQuery.of(context).orientation;
+
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
+
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+      body: Stack(children: [
+        Container(
+          child: listMap.isEmpty
+              ? const Center(child: CircularProgressIndicator())
               : GridView(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -109,7 +100,7 @@ class _HomeState extends State<Home> {
                                         IconButton(
                                             onPressed: () {
                                               // cart.add(listMap[index]);
-                                              context.read(D).state = cart;
+                                              globalref?.read(D).addAll(cart);
                                             },
                                             icon: const Icon(
                                               Icons.shopping_cart,
@@ -123,141 +114,33 @@ class _HomeState extends State<Home> {
                             ),
                           )),
                 ),
-
-          // the cart page algorithm...........
-          Consumer(builder: (context, watch, child) {
-            List<Map> _cart = watch(D).state;
-            int tottal = 0;
-            for (var item in _cart) {
-              tottal = (item['price'] + tottal);
-            }
-            int cp = 0;
-            int cptotal = 0;
-            for (var item in _cart) {
-              if (item['price'] <= 4000) {
-                cp = 200;
-              } else if (item['price'] <= 10000) {
-                cp = 300;
-              } else if (item['price'] > 10000) {
-                cp = 500;
-              } else {
-                cp = 0;
-              }
-              cptotal = (cptotal + cp);
-            }
-
-            int finaltotal = 0;
-            finaltotal = (cptotal + tottal);
-
-            // the ui for each item in the cartpage
-            return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: _cart.length,
-                        itemBuilder: (BuildContext context, index) {
-                          return Card(
-                            // color: Colors.black,
-                            shadowColor: Colors.black87,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 150,
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30))),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 65,
-                                      backgroundImage: NetworkImage(
-                                          listMap[index][frontImage]),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 50, vertical: 40),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(_cart[index][name]),
-                                          Text(_cart[index][price].toString())
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
+        ),
+        Positioned(
+          bottom: 90,
+          right: 6,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  elevation: 5,
+                  shape: const CircleBorder(
+                    side: BorderSide(width: 70),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 200,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Sub Total'),
-                              Text(tottal.toString())
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('CP fee'),
-                              Text(cptotal.toString())
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 60),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Total'),
-                              Text(finaltotal.toString())
-                            ],
-                          ),
-                        ),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('PAY'),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            );
+                  fixedSize: const Size(50, 50)),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => const ShoppingcartforHome())));
+              },
+              child: const Icon(Icons.shopping_cart)),
+        )
+      ]),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.sell),
+          tooltip: 'Sell It',
+          onPressed: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const SellPagez()));
           }),
-        ]),
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.sell),
-            tooltip: 'Sell It',
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => const SellPagez()));
-            }),
-      ),
     );
   }
 }

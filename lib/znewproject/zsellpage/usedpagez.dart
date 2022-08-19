@@ -76,10 +76,10 @@ class _UsedPsellState extends State<UsedPsellz> {
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Colors.black,
+                    color: Colors.blue,
                   ),
                   height: 50,
-                  width: 150,
+                  width: 250,
                   child: const Center(
                       child: Text(
                     "CONFIRM",
