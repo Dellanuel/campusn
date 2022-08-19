@@ -24,7 +24,7 @@ class _HomeEState extends State<HomeE> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: height / 8,
-        title: Text('Campus Pay',
+        title: Text('Campus nile',
             style: GoogleFonts.alumniSansInlineOne(
               fontSize: 26,
               letterSpacing: 1.5,
